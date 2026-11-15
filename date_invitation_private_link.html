@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff0f5">
+<title>Date Invitation | دعوت‌نامه دیت</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Amiri:wght@400;700&family=Lateef:wght@400;700&display=swap');
+
+:root {
+  --ink:#713c53; --muted:#a87990; --pink:#df83a6; --line:#f1cfdd;
+  --surface:#ffffffed; --bg1:#fff0f5; --bg2:#fce1eb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; color:var(--ink);
+  font-family:"Vazirmatn",sans-serif;
+  background:radial-gradient(circle at 12% 8%,#fff 0,transparent 27%),
+    linear-gradient(145deg,var(--bg1),var(--bg2),#fff8fa);
+  overflow-x:hidden;
+}
+header{text-align:center;padding:34px 16px 18px;position:relative;z-index:1}
+.logo{font-size:35px;filter:drop-shadow(0 5px 8px #d88aa744)}
+header h1{font-size:clamp(25px,4vw,34px);margin:7px 0 2px}
+header p{font-size:14px;color:var(--muted);margin:5px 0}
+.shell{max-width:1080px;margin:0 auto;padding:12px 18px 30px;position:relative;z-index:1}
+.layout{display:grid;grid-template-columns:minmax(280px, .92fr) minmax(320px,1.08fr);gap:22px;align-items:start}
+.panel{background:var(--surface);border:1px solid #f5d5e2;border-radius:25px;padding:23px;box-shadow:0 14px 38px #b85d7d12;backdrop-filter:blur(8px)}
+h2{font-size:18px;margin:0 0 17px}
+label{display:block;font-size:13px;font-weight:600;margin:14px 0 7px}
+input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--line);background:#fff9fb;border-radius:12px;font:inherit;font-size:14px;color:var(--ink);outline:none}
+input:focus,textarea:focus,select:focus{border-color:#df83a6;box-shadow:0 0 0 3px #df83a61c}
+textarea{resize:vertical;min-height:82px}
+.date-selects{display:grid;grid-template-columns:.8fr 1.3fr 1fr;gap:6px}
+.date-selects select{min-width:0;padding:12px 5px;font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.templates{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.template{border:1px solid var(--line);background:#fff8fb;color:var(--ink);padding:10px 5px;border-radius:13px;font-size:12px}
+.template[aria-pressed="true"]{outline:2px solid var(--pink);background:#ffe8f0}
+.template span{display:block;font-size:20px;margin-bottom:3px}
+button{font-family:inherit;cursor:pointer;transition:transform .18s,filter .18s}
+button:hover{transform:translateY(-1px);filter:brightness(.99)}
+button:focus-visible{outline:3px solid #b9577e;outline-offset:3px}
+.primary,.secondary{width:100%;border:0;border-radius:13px;padding:13px 16px;font-size:14px;font-weight:700}
+.primary{background:linear-gradient(135deg,#e997b5,#d8739b);color:white;margin-top:17px;box-shadow:0 8px 18px #d8739b33}
+.secondary{background:#fce5ee;color:#a94d75;margin-top:9px}
+.note{font-size:11px;color:#a87990;line-height:1.8;margin:12px 2px 0}
+.preview-panel{position:sticky;top:14px}
+.preview-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.live{font-size:11px;color:#9d6580;background:#fff0f5;padding:5px 9px;border-radius:30px}
+.preview{min-height:490px;display:flex;align-items:center;justify-content:center;padding:10px}
+.invitation{width:min(100%,440px);min-height:420px;padding:36px 25px 28px;text-align:center;border-radius:24px;position:relative;overflow:hidden;isolation:isolate;background:#fff0f5;border:1px solid #f2c7d8;box-shadow:0 14px 35px #9d48631c;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.invitation:before,.invitation:after{content:"♡";position:absolute;color:#efb5ca;opacity:.48;z-index:-1;font-size:118px;line-height:1}
+.invitation:before{top:-37px;right:-8px}.invitation:after{bottom:-48px;left:-8px}
+.invitation .eyebrow{font-size:10px;letter-spacing:2px;color:#a96c86}
+.invitation .big-heart{font-size:39px;margin:8px 0}
+.invitation h3{font-size:clamp(22px,3vw,29px);color:#a84e75;margin:5px 0 9px}
+.invitation .intro{font-size:13px;margin:0;color:#91647a}
+.names{font-size:19px;font-weight:800;color:#a84e75;line-height:1.9;margin:17px 0}
+.details{width:100%;max-width:310px;background:#ffffffa8;border:1px solid #f4d9e4;border-radius:15px;padding:12px 14px;margin:8px 0 12px;font-size:12px;line-height:2.2}
+.message{font-size:13px;line-height:2;color:#89566f;white-space:pre-wrap;overflow-wrap:anywhere;max-width:330px;margin:6px auto}
+.closing{font-size:22px;margin-top:12px}
+.theme-lilac .invitation{background:#f2edff;border-color:#d9c9f3}
+.theme-lilac .invitation h3,.theme-lilac .names{color:#77599d}
+.theme-lilac .invitation:before,.theme-lilac .invitation:after{color:#cbb8ed}
+.theme-peach .invitation{background:#fff0e8;border-color:#f2d0bc}
+.theme-peach .invitation h3,.theme-peach .names{color:#a76552}
+.theme-peach .invitation:before,.theme-peach .invitation:after{color:#efc1aa}
+.theme-classic .invitation{background:#fffaf0;border:2px solid #d8c5a1;border-radius:8px}
+.theme-classic .invitation h3,.theme-classic .names{color:#846b43}
+.theme-classic .invitation:before,.theme-classic .invitation:after{color:#e7d8b8}
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.heart{position:absolute;bottom:-35px;color:#e99ab7;opacity:0;animation:floatUp linear forwards;filter:drop-shadow(0 2px 3px #d97b9b30)}
+@keyframes floatUp{0%{transform:translateY(0) rotate(0deg);opacity:0}12%{opacity:.5}85%{opacity:.35}100%{transform:translateY(-110vh) rotate(35deg);opacity:0}}
+footer{text-align:center;color:#b17c94;font-size:11px;padding:4px 16px 24px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.preview-panel{position:static;grid-row:1}.panel{padding:19px}.preview{min-height:430px}.invitation{min-height:390px}}
+@media(max-width:390px){.row{grid-template-columns:1fr}.templates{gap:6px}.template{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+.recipient-view .layout{grid-template-columns:minmax(0,1fr);max-width:720px;margin:auto}
+.recipient-view .layout > section:first-child{display:none}
+.recipient-view .preview-panel{position:static}
+.recipient-view .preview{min-height:70vh}
+.recipient-view .invitation{width:min(100%,520px);min-height:520px}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+<header>
+  <div class="logo" aria-hidden="true">💌 🌷</div>
+  <h1>Date Invitation</h1>
+  <p>یه دعوت کوچولو برای ساختن یه خاطره قشنگ...</p>
+</header>
+
+<main class="shell">
+  <div class="layout">
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">✨ ساخت دعوت‌نامه</h2>
+
+      <label>قالب آماده</label>
+      <div class="templates" role="group" aria-label="انتخاب قالب">
+        <button class="template" type="button" data-theme="pink" aria-pressed="true"><span>💗</span>صورتی</button>
+        <button class="template" type="button" data-theme="lilac" aria-pressed="false"><span>💜</span>یاسی</button>
+        <button class="template" type="button" data-theme="peach" aria-pressed="false"><span>🍑</span>هلویی</button>
+        <button class="template" type="button" data-theme="classic" aria-pressed="false"><span>🤍</span>کلاسیک</button>
+      </div>
+
+      <div class="row">
+        <div><label for="sender">اسم دعوت‌کننده</label><input id="sender" maxlength="40" placeholder="مثلاً سارا"></div>
+        <div><label for="guest">اسم مهمان</label><input id="guest" maxlength="40" placeholder="مثلاً آراد"></div>
+      </div>
+      <label for="heading">عنوان دعوت</label>
+      <input id="heading" maxlength="60" value="یه قرار قشنگ؟">
+      <div class="row">
+        <div class="date-picker">
+          <label>تاریخ قرار (شمسی)</label>
+          <div class="date-selects">
+            <select id="date-day" aria-label="روز"><option value="">روز</option></select>
+            <select id="date-month" aria-label="ماه">
+              <option value="">ماه</option>
+              <option value="1">فروردین</option><option value="2">اردیبهشت</option>
+              <option value="3">خرداد</option><option value="4">تیر</option>
+              <option value="5">مرداد</option><option value="6">شهریور</option>
+              <option value="7">مهر</option><option value="8">آبان</option>
+              <option value="9">آذر</option><option value="10">دی</option>
+              <option value="11">بهمن</option><option value="12">اسفند</option>
+            </select>
+            <select id="date-year" aria-label="سال"><option value="">سال</option></select>
+          </div>
+        </div>
+        <div><label for="time">ساعت قرار</label><input id="time" type="time"></div>
+      </div>
+      <label for="place">مکان قرار</label>
+      <input id="place" maxlength="100" placeholder="مثلاً کافه مورد علاقه‌مون">
+      <label for="message">پیام اختصاصی</label>
+      <textarea id="message" maxlength="350">دوست دارم یه روز قشنگ رو کنار هم بسازیم. منتظر جوابت هستم! 💗</textarea>
+      <label for="font">فونت کارت</label>
+      <select id="font">
+        <option value="Vazirmatn">وزیرمتن (پیشنهادی)</option>
+        <option value="Amiri">امیری</option>
+        <option value="Lateef">لطیف</option>
+        <option value="Tahoma">Tahoma</option>
+      </select>
+      <button class="primary" id="download" type="button">دانلود کارت با فرمت PNG 💌</button>
+      <button class="secondary" id="share" type="button">اشتراک‌گذاری متن دعوت‌نامه</button>
+      <button class="secondary" id="private-link" type="button">ساخت لینک خصوصی دعوت‌نامه 🔒</button>
+      <p class="note">برای لینک خصوصی، یک رمز حداقل ۸ کاراکتری انتخاب کن و رمز را جدا از لینک برای مهمان بفرست. لینک فقط روی نسخه میزبانی‌شده با HTTPS کار می‌کند. تاریخ با تقویم شمسی انتخاب می‌شود و به تقویم یا تنظیمات مرورگر وابسته نیست. پیش‌نمایش با هر تغییر به‌روز می‌شود. برای فونت‌های آنلاین، اتصال اینترنت لازم است؛ Tahoma به‌صورت محلی در دسترس مرورگرهاست.</p>
+    </section>
+
+    <section class="panel preview-panel" aria-labelledby="preview-title">
+      <div class="preview-head">
+        <h2 id="preview-title">💗 پیش‌نمایش زنده</h2>
+        <span class="live">LIVE PREVIEW</span>
+      </div>
+      <div class="preview" id="preview">
+        <article class="invitation" id="card">
+          <div class="eyebrow">YOU ARE INVITED TO</div>
+          <div class="big-heart" aria-hidden="true">💌</div>
+          <h3 id="v-heading">یه قرار قشنگ؟</h3>
+          <p class="intro">یه دعوت ویژه برای تو...</p>
+          <div class="names"><span id="v-sender">...</span><br>♡<br><span id="v-guest">تو</span></div>
+          <div class="details">
+            <div>📅 <span id="v-date">تاریخ قرار</span></div>
+            <div>🕒 <span id="v-time">ساعت قرار</span></div>
+            <div>📍 <span id="v-place">مکان قرار</span></div>
+          </div>
+          <p class="message" id="v-message">دوست دارم یه روز قشنگ رو کنار هم بسازیم. منتظر جوابت هستم! 💗</p>
+          <div class="closing" aria-hidden="true">🌷 ♡ 🌷</div>
+        </article>
+      </div>
+    </section>
+  </div>
+</main>
+<footer>Made with love ♡ Date Invitation</footer>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const fields = ["sender","guest","heading","time","place","message","font"];
+let currentTheme = "pink";
+const themeClasses = ["theme-lilac","theme-peach","theme-classic"];
+
+function safeText(value, fallback) {
+  const clean = String(value ?? "").trim();
+  return clean || fallback;
+}
+function toPersianDigits(value) {
+  return String(value).replace(/[0-9]/g, digit => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)]);
+}
+function jalaliLeapYear(year) {
+  const breaks = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+    1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
+  let jp = breaks[0], jump = 0, jm = 0, leap = 0;
+  if (year < jp || year >= breaks[breaks.length - 1]) return false;
+  for (let i = 1; i < breaks.length; i++) {
+    jm = breaks[i]; jump = jm - jp;
+    if (year < jm) break;
+    jp = jm;
+  }
+  let n = year - jp;
+  if (jump - n < 6) n = n - jump + Math.floor((jump + 4) / 33) * 33;
+  leap = (((n + 1) % 33) - 1) % 4;
+  if (leap === -1) leap = 4;
+  return leap === 0;
+}
+function updateDayOptions() {
+  const month = Number($("date-month").value);
+  const year = Number($("date-year").value);
+  const daySelect = $("date-day");
+  const previous = daySelect.value;
+  const maxDay = !month ? 31 : month <= 6 ? 31 : month <= 11 ? 30 :
+    (year && jalaliLeapYear(year) ? 30 : 29);
+  daySelect.innerHTML = '<option value="">روز</option>';
+  for (let day = 1; day <= maxDay; day++) {
+    const option = document.createElement("option");
+    option.value = String(day);
+    option.textContent = toPersianDigits(day);
+    daySelect.appendChild(option);
+  }
+  if (previous && Number(previous) <= maxDay) daySelect.value = previous;
+}
+for (let year = 1400; year <= 1415; year++) {
+  const option = document.createElement("option");
+  option.value = String(year);
+  option.textContent = toPersianDigits(year);
+  $("date-year").appendChild(option);
+}
+updateDayOptions();
+["date-day","date-month","date-year"].forEach(id =>
+  $(id).addEventListener("change", () => {
+    if (id !== "date-day") updateDayOptions();
+    updatePreview();
+  })
+);
+
+function updatePreview() {
+  $("v-sender").textContent = safeText($("sender").value, "...");
+  $("v-guest").textContent = safeText($("guest").value, "تو");
+  $("v-heading").textContent = safeText($("heading").value, "یه قرار قشنگ؟");
+  $("v-place").textContent = safeText($("place").value, "مکان قرار");
+  $("v-time").textContent = $("time").value || "ساعت قرار";
+  $("v-message").textContent = safeText($("message").value, "یه پیام قشنگ برای تو 💗");
+
+  const day = $("date-day").value;
+  const month = $("date-month").value;
+  const year = $("date-year").value;
+  const monthNames = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور",
+    "مهر","آبان","آذر","دی","بهمن","اسفند"];
+  if (day && month && year) {
+    $("v-date").textContent = `${toPersianDigits(day)} ${monthNames[Number(month)-1]} ${toPersianDigits(year)}`;
+  } else {
+    $("v-date").textContent = "تاریخ قرار";
+  }
+  $("card").style.fontFamily = `"${$("font").value}", Tahoma, sans-serif`;
+}
+function selectTheme(theme) {
+  currentTheme = theme;
+  $("card").classList.remove(...themeClasses);
+  if (theme !== "pink") $("card").classList.add("theme-" + theme);
+  document.querySelectorAll(".template").forEach(btn => {
+    btn.setAttribute("aria-pressed", String(btn.dataset.theme === theme));
+  });
+}
+fields.forEach(id => $(id).addEventListener("input", updatePreview));
+$("font").addEventListener("change", updatePreview);
+document.querySelectorAll(".template").forEach(btn =>
+  btn.addEventListener("click", () => selectTheme(btn.dataset.theme))
+);
+
+function makeCardSvg() {
+  const card = $("card");
+  const width = 900, height = 1050;
+  const text = (id) => $(id).textContent;
+  const palette = {
+    pink: ["#fff0f5","#a84e75","#efb5ca","#f4d9e4"],
+    lilac: ["#f2edff","#77599d","#cbb8ed","#e0d5f2"],
+    peach: ["#fff0e8","#a76552","#efc1aa","#f3d8ca"],
+    classic: ["#fffaf0","#846b43","#e7d8b8","#e6dbc4"]
+  }[currentTheme];
+  const fontFamily = $("font").value === "Tahoma" ? "Tahoma, sans-serif" : `${$("font").value}, Tahoma, sans-serif`;
+  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[c]));
+  const wrap = (value, maxChars) => {
+    const words = String(value).split(/\s+/);
+    const lines = []; let line = "";
+    for (const word of words) {
+      const next = line ? line + " " + word : word;
+      if (next.length > maxChars && line) { lines.push(line); line = word; }
+      else line = next;
+    }
+    if (line) lines.push(line);
+    return lines.slice(0, 5);
+  };
+  const messageLines = wrap(text("v-message"), 37);
+  const messageSvg = messageLines.map((line,i) =>
+    `<text x="450" y="${820+i*38}" text-anchor="middle" font-size="23" fill="${palette[1]}">${esc(line)}</text>`
+  ).join("");
+  const dateLine = `تاریخ: ${text("v-date")}`;
+  const timeLine = `ساعت: ${text("v-time")}`;
+  const placeLine = `مکان: ${text("v-place")}`;
+  const names = `${text("v-sender")}  ♡  ${text("v-guest")}`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    <rect width="900" height="1050" rx="38" fill="${palette[0]}"/>
+    <rect x="24" y="24" width="852" height="1002" rx="${currentTheme==="classic"?10:30}" fill="none" stroke="${palette[2]}" stroke-width="4"/>
+    <text x="450" y="120" text-anchor="middle" font-family="${fontFamily}" font-size="24" letter-spacing="5" fill="${palette[1]}">YOU ARE INVITED TO</text>
+    <text x="450" y="225" text-anchor="middle" font-size="76">💌</text>
+    <text x="450" y="330" text-anchor="middle" font-family="${fontFamily}" font-size="48" font-weight="700" fill="${palette[1]}">${esc(text("v-heading"))}</text>
+    <text x="450" y="390" text-anchor="middle" font-family="${fontFamily}" font-size="25" fill="${palette[1]}">یه دعوت ویژه برای تو...</text>
+    <text x="450" y="500" text-anchor="middle" font-family="${fontFamily}" font-size="36" font-weight="700" fill="${palette[1]}">${esc(names)}</text>
+    <rect x="145" y="555" width="610" height="190" rx="24" fill="#ffffffb8" stroke="${palette[3]}" stroke-width="2"/>
+    <text x="450" y="610" text-anchor="middle" font-family="${fontFamily}" font-size="25" fill="${palette[1]}">${esc(dateLine)}</text>
+    <text x="450" y="665" text-anchor="middle" font-family="${fontFamily}" font-size="25" fill="${palette[1]}">${esc(timeLine)}</text>
+    <text x="450" y="720" text-anchor="middle" font-family="${fontFamily}" font-size="25" fill="${palette[1]}">${esc(placeLine)}</text>
+    ${messageSvg}
+    <text x="450" y="990" text-anchor="middle" font-size="42">🌷 ♡ 🌷</text>
+  </svg>`;
+  return svg;
+}
+async function downloadPng() {
+  const button = $("download");
+  button.disabled = true;
+  button.textContent = "در حال آماده‌سازی تصویر...";
+  try {
+    if (document.fonts?.ready) await document.fonts.ready;
+    const svgBlob = new Blob([makeCardSvg()], {type:"image/svg+xml;charset=utf-8"});
+    const url = URL.createObjectURL(svgBlob);
+    try {
+      const img = new Image();
+      img.src = url;
+      await new Promise((resolve,reject) => {
+        img.onload = resolve;
+        img.onerror = () => reject(new Error("بارگذاری تصویر ناموفق بود."));
+      });
+      const canvas = document.createElement("canvas");
+      canvas.width = 1800; canvas.height = 2100;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("مرورگر امکان ساخت تصویر را فراهم نکرد.");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      const pngBlob = await new Promise(resolve => canvas.toBlob(resolve,"image/png"));
+      if (!pngBlob) throw new Error("ساخت فایل PNG ممکن نشد.");
+      const pngUrl = URL.createObjectURL(pngBlob);
+      const a = document.createElement("a");
+      a.href = pngUrl; a.download = "date-invitation.png";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(pngUrl), 1500);
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  } catch (error) {
+    alert("دانلود تصویر انجام نشد. لطفاً صفحه را در مرورگر به‌روز امتحان کن.\n" + error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = "دانلود کارت با فرمت PNG 💌";
+  }
+}
+function bytesToBase64Url(bytes) {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+function base64UrlToBytes(value) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const binary = atob(normalized + "=".repeat((4 - normalized.length % 4) % 4));
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+async function deriveInvitationKey(password, salt) {
+  const material = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]
+  );
+  return crypto.subtle.deriveKey(
+    {name:"PBKDF2", salt, iterations:310000, hash:"SHA-256"},
+    material, {name:"AES-GCM", length:256}, false, ["encrypt","decrypt"]
+  );
+}
+function invitationData() {
+  return {
+    sender:$("sender").value, guest:$("guest").value, heading:$("heading").value,
+    time:$("time").value, place:$("place").value, message:$("message").value,
+    font:$("font").value, theme:currentTheme,
+    day:$("date-day").value, month:$("date-month").value, year:$("date-year").value
+  };
+}
+async function createPrivateLink() {
+  if (!/^https:$/.test(location.protocol) && location.hostname !== "localhost") {
+    alert("اول فایل را روی یک میزبان HTTPS منتشر کن؛ لینک ساخته‌شده از فایل محلی برای دیگران باز نمی‌شود.");
+    return;
+  }
+  const password = prompt("یک رمز خصوصی حداقل ۸ کاراکتری وارد کن. رمز را جداگانه برای مهمان بفرست:");
+  if (password === null) return;
+  if (password.length < 8) {
+    alert("رمز باید حداقل ۸ کاراکتر باشد.");
+    return;
+  }
+  if (!window.crypto?.subtle) {
+    alert("مرورگر امکان رمزگذاری امن را فراهم نمی‌کند. صفحه را با HTTPS باز کن.");
+    return;
+  }
+  const button = $("private-link");
+  button.disabled = true;
+  const oldLabel = button.textContent;
+  button.textContent = "در حال ساخت لینک امن...";
+  try {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveInvitationKey(password, salt);
+    const plaintext = new TextEncoder().encode(JSON.stringify(invitationData()));
+    const ciphertext = await crypto.subtle.encrypt({name:"AES-GCM",iv}, key, plaintext);
+    const payload = bytesToBase64Url(new Uint8Array([
+      ...salt, ...iv, ...new Uint8Array(ciphertext)
+    ]));
+    const link = location.href.split("#")[0] + "#invite=" + payload;
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(link);
+      alert("لینک خصوصی کپی شد 💌 رمز را جداگانه برای مهمان بفرست.");
+    } else {
+      window.prompt("این لینک خصوصی را کپی کن و رمز را جداگانه بفرست:", link);
+    }
+  } catch (error) {
+    alert("ساخت لینک انجام نشد. صفحه را با HTTPS باز کن و دوباره امتحان کن.");
+  } finally {
+    button.disabled = false;
+    button.textContent = oldLabel;
+  }
+}
+async function openPrivateInvitation() {
+  const match = location.hash.match(/^#invite=([A-Za-z0-9_-]+)$/);
+  if (!match) return;
+  document.body.classList.add("recipient-view");
+  const password = prompt("برای باز کردن دعوت‌نامه، رمز خصوصی را وارد کن:");
+  if (password === null) {
+    document.body.classList.remove("recipient-view");
+    return;
+  }
+  try {
+    const packed = base64UrlToBytes(match[1]);
+    if (packed.length < 29) throw new Error("Invalid invitation");
+    const salt = packed.slice(0,16);
+    const iv = packed.slice(16,28);
+    const ciphertext = packed.slice(28);
+    const key = await deriveInvitationKey(password, salt);
+    const plaintext = await crypto.subtle.decrypt({name:"AES-GCM",iv}, key, ciphertext);
+    const data = JSON.parse(new TextDecoder().decode(plaintext));
+    for (const id of ["sender","guest","heading","time","place","message","font"]) {
+      if (typeof data[id] === "string") $(id).value = data[id];
+    }
+    $("date-month").value = data.month || "";
+    $("date-year").value = data.year || "";
+    updateDayOptions();
+    $("date-day").value = data.day || "";
+    selectTheme(["pink","lilac","peach","classic"].includes(data.theme) ? data.theme : "pink");
+    updatePreview();
+    document.title = "دعوت‌نامه خصوصی 💌";
+  } catch (error) {
+    alert("رمز اشتباه است یا لینک معتبر نیست. رمز را از فرستنده بگیر و دوباره امتحان کن.");
+    document.body.classList.remove("recipient-view");
+  }
+}
+$("private-link").addEventListener("click", createPrivateLink);
+
+function shareText() {
+  return [
+    safeText($("heading").value,"یه قرار قشنگ؟"),
+    `از طرف: ${safeText($("sender").value,"...")}`,
+    `برای: ${safeText($("guest").value,"تو")}`,
+    `تاریخ: ${$("v-date").textContent}`,
+    `ساعت: ${$("v-time").textContent}`,
+    `مکان: ${$("v-place").textContent}`,
+    $("v-message").textContent
+  ].join("\n");
+}
+$("download").addEventListener("click", downloadPng);
+$("share").addEventListener("click", async () => {
+  const data = {title:"Date Invitation",text:shareText()};
+  try {
+    if (navigator.share) await navigator.share(data);
+    else if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(data.text);
+      alert("متن دعوت‌نامه کپی شد 💗");
+    } else {
+      window.prompt("متن دعوت‌نامه را کپی کن:", data.text);
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") alert("اشتراک‌گذاری در این مرورگر در دسترس نیست.");
+  }
+});
+
+function addFloatingHeart() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const layer = $("hearts");
+  const heart = document.createElement("span");
+  heart.className = "heart";
+  heart.textContent = Math.random() > .5 ? "♡" : "♥";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.fontSize = (13 + Math.random()*15) + "px";
+  const duration = 8 + Math.random()*6;
+  heart.style.animationDuration = duration + "s";
+  layer.appendChild(heart);
+  setTimeout(() => heart.remove(), duration*1000);
+}
+setInterval(addFloatingHeart, 1250);
+updatePreview();
+openPrivateInvitation();
+</script>
+</body>
+</html>
